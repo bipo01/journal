@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title><%= data.titulo %></title>
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+            crossorigin="anonymous"
+        />
+        <link rel="stylesheet" href="verpost.css" />
+    </head>
+    <body>
+        <div class="container my-5">
+            <div class="post-escondido" id="texto<%=data.id%>">
+                <div class="post-escondido-in bg-dark p-4 rounded text-white">
+                    <h3 id="tituloAtual" contenteditable="true">
+                        <%= data.titulo %>
+                    </h3>
+                    <textarea
+                        id="dataAtual"
+                        contenteditable="true"
+                        rows="15"
+                        style="
+                            width: 100%;
+                            border: none;
+                            background: none;
+                            color: inherit;
+                        "
+                    >
+<%= data.texto?.replaceAll(
+    "*18*",
+    "\n"
+) %></textarea
+                    >
+                    <small
+                        ><em id="autorAtual" contenteditable="true"
+                            ><%= data.autor %></em
+                        ></small
+                    >
+                    <div class="d-flex justify-content-between mt-3">
+                        <form action="/delete" method="post">
+                            <input
+                                type="hidden"
+                                name="idAtual"
+                                value="<%= data.id %>"
+                            />
+                            <button
+                                type="submit"
+                                class="btn btn-outline-danger"
+                            >
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="16"
+                                    height="16"
+                                    fill="currentColor"
+                                    class="bi bi-trash3-fill"
+                                    viewBox="0 0 16 16"
+                                >
+                                    <path
+                                        d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5"
+                                    ></path>
+                                </svg>
+                                Deletar
+                            </button>
+                        </form>
+                        <form
+                            class="hidden form-alteracoes"
+                            action="/salvar"
+                            method="post"
+                        >
+                            <input
+                                type="hidden"
+                                id="idAtual"
+                                value="<%= data.id %>"
+                            />
+                            <input
+                                type="hidden"
+                                name="tituloEditado"
+                                id="tituloEditado"
+                            />
+                            <input
+                                type="hidden"
+                                name="textoEditado"
+                                id="textoEditado"
+                            />
+                            <input
+                                type="hidden"
+                                name="autorEditado"
+                                id="autorEditado"
+                            />
+                            <button
+                                type="button submit"
+                                class="btn btn-primary"
+                            >
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="16"
+                                    height="16"
+                                    fill="currentColor"
+                                    class="bi bi-check-circle"
+                                    viewBox="0 0 16 16"
+                                >
+                                    <path
+                                        d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"
+                                    ></path>
+                                    <path
+                                        d="m10.97 4.97-.02.022-3.473 4.425-2.093-2.094a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05"
+                                    ></path>
+                                </svg>
+                                Salvar alterações
+                            </button>
+                        </form>
+                    </div>
+                    <a href="/logado" class="btn btn-link text-light mt-3"
+                        >Voltar</a
+                    >
+                </div>
+            </div>
+        </div>
+
+        <script>
+            const tituloAnt = document
+                .querySelector("#tituloAtual")
+                .textContent.trim();
+            const dataAnt = document.querySelector("#dataAtual").value;
+            const autorAnt = document
+                .querySelector("#autorAtual")
+                .textContent.trim();
+
+            let tituloAtual;
+            let dataAtual;
+            let autorAtual;
+
+            document.addEventListener("input", (e) => {
+                tituloAtual = document
+                    .querySelector("#tituloAtual")
+                    .textContent.trim();
+                dataAtual = document.querySelector("#dataAtual").value;
+                autorAtual = document
+                    .querySelector("#autorAtual")
+                    .textContent.trim();
+
+                if (
+                    tituloAnt !== tituloAtual ||
+                    dataAnt !== dataAtual ||
+                    autorAnt !== autorAtual
+                ) {
+                    document
+                        .querySelector(".form-alteracoes")
+                        .classList.remove("hidden");
+                } else if (
+                    tituloAnt === tituloAtual &&
+                    dataAnt === dataAtual &&
+                    autorAnt === autorAtual
+                ) {
+                    document
+                        .querySelector(".form-alteracoes")
+                        .classList.add("hidden");
+                } else if (e.data === null) {
+                    document
+                        .querySelector(".form-alteracoes")
+                        .classList.remove("hidden");
+                }
+            });
+
+            document
+                .querySelector(".form-alteracoes")
+                .addEventListener("submit", async (e) => {
+                    e.preventDefault();
+
+                    const idAtual = document.querySelector("#idAtual").value;
+
+                    fetch(
+                        `http://localhost:3000/salvar?titulo=${tituloAtual}&texto=${dataAtual.replaceAll(
+                            "\n",
+                            "*18*"
+                        )}&autor=${autorAtual}&id=${idAtual}`
+                    );
+
+                    document
+                        .querySelector(".form-alteracoes")
+                        .classList.add("hidden");
+                });
+        </script>
+
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+            crossorigin="anonymous"
+        ></script>
+    </body>
+</html>

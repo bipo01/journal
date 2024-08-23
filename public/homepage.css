@@ -1,0 +1,103 @@
+body {
+    font-family: "Poppins", sans-serif;
+    background-color: #121212;
+    color: #e0e0e0;
+}
+
+.hero-section {
+    background-color: #1e1e1e;
+
+    padding: 100px 0;
+    color: white;
+    text-align: center;
+}
+
+.hero-section h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.hero-section p {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+}
+
+.features-section {
+    padding: 60px 0;
+    text-align: center;
+    background-color: #2a2a2a;
+}
+
+.features-section h2 {
+    font-size: 2.5rem;
+    font-weight: 600;
+    margin-bottom: 40px;
+    color: #ffffff;
+}
+
+.features-section .row {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.feature-box {
+    margin-bottom: 30px;
+    background-color: #2a2a2a;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.feature-box p,
+.feature-box h4 {
+    color: white;
+}
+
+.feature-box i {
+    font-size: 3rem;
+    color: #f7c600;
+    margin-bottom: 20px;
+}
+
+.cta-section {
+    padding: 60px 0;
+    background-color: #1e1e1e;
+    color: white;
+    text-align: center;
+}
+
+.cta-section h2 {
+    font-size: 2.5rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.cta-section p {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+}
+
+.cta-section a {
+    font-weight: 500;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+}
+
+.btn-primary {
+    background-color: #0056b3;
+    border-color: #004085;
+}
+
+.btn-dark {
+    background-color: #f7c600 !important;
+    color: black !important;
+    font-weight: 500 !important;
+    font-size: 1.2rem !important;
+    text-transform: uppercase !important;
+}
+
+.btn-dark:hover {
+    color: #d6a500 !important; /* Amarelo dourado escurecido */
+    background-color: #1e1e1e !important; /* Pode adicionar ou manter a cor de fundo escura */
+}

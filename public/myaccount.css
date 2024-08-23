@@ -1,0 +1,49 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+
+:root {
+    --primary-bg: #121212;
+    --secondary-bg: #1e1e1e;
+    --tertiary-bg: #2a2a2a;
+    --primary-text: #e0e0e0;
+    --secondary-text: #ffffff;
+    --highlight: #f7c600;
+    --hover-highlight: #d6a500;
+    --error-red: #b22222;
+    --error-red-hover: #8b1a1a;
+}
+
+body {
+    font-family: "Poppins", sans-serif;
+    background-color: var(--secondary-bg) !important;
+    color: var(--primary-text);
+}
+
+.hero-section {
+    color: var(--secondary-text);
+}
+
+.hero-section h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.hero-section p {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+}
+
+.cta-section .btn-account {
+    background-color: var(--error-red);
+    color: var(--primary-text);
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-weight: 600;
+    font-size: 1.2rem;
+    transition: background-color 0.2s, transform 0.2s;
+}
+
+.cta-section .btn-account:hover {
+    background-color: var(--error-red-hover);
+    transform: translateY(-3px);
+}

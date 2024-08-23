@@ -1,0 +1,107 @@
+:root {
+    --primary-bg: #121212; /* Cor de fundo principal */
+    --secondary-bg: #1e1e1e; /* Cor de fundo secundária */
+    --tertiary-bg: #2a2a2a; /* Cor de fundo terciária */
+    --primary-text: #e0e0e0; /* Cor de texto principal */
+    --secondary-text: #ffffff; /* Cor de texto secundária */
+    --highlight: #f7c600; /* Cor de destaque */
+    --hover-highlight: #d6a500; /* Cor de destaque ao passar o mouse */
+    --button-bg: #0056b3; /* Cor de fundo dos botões */
+    --button-hover-bg: #004085; /* Cor de fundo dos botões ao passar o mouse */
+    --scrollbar-bg: #2a2a2a; /* Cor de fundo da barra de rolagem */
+    --scrollbar-thumb-bg: #484848; /* Cor da parte deslizante da barra de rolagem */
+    --error-red: #b22222; /* Um tom de vermelho escuro que combina com a paleta */
+    --error-red-hover: #8b1a1a; /* Vermelho escuro ao passar o mouse */
+}
+
+body {
+    font-family: "Poppins", sans-serif;
+    background-color: var(--primary-bg) !important;
+    color: var(--primary-text);
+}
+
+.post-escondido-in {
+    background-color: var(--tertiary-bg) !important;
+    color: var(--primary-text);
+}
+
+h3 {
+    color: var(--highlight);
+}
+
+p {
+    color: var(--primary-text);
+}
+
+small {
+    color: var(--secondary-text);
+}
+
+.btn-outline-danger {
+    color: var(--error-red);
+    border-color: var(--error-red);
+}
+
+.btn-outline-danger:hover {
+    background-color: var(--error-red);
+    color: var(--secondary-text);
+}
+
+.btn-primary {
+    background-color: var(--highlight) !important;
+    border-color: var(--highlight) !important;
+    font-weight: bolder;
+    color: #121212 !important;
+}
+
+.btn-primary:hover {
+    background-color: var(--hover-highlight) !important;
+    border-color: var(--hover-highlight) !important;
+}
+
+a.btn-link {
+    color: var(--highlight);
+}
+
+a.btn-link:hover {
+    color: var(--hover-highlight);
+}
+
+textarea::-webkit-scrollbar {
+    width: 12px; /* Largura da barra de rolagem */
+}
+
+textarea::-webkit-scrollbar-track {
+    background: var(
+        --scrollbar-bg
+    ) !important; /* Cor de fundo da barra de rolagem */
+}
+
+textarea::-webkit-scrollbar-thumb {
+    background: var(
+        --scrollbar-thumb-bg
+    ) !important; /* Cor da parte deslizante da barra de rolagem */
+    border-radius: 10px !important; /* Bordas arredondadas para a parte deslizante */
+    border: 3px solid var(--scrollbar-bg) !important; /* Cor do fundo da parte deslizante */
+}
+
+textarea::-webkit-scrollbar-thumb:hover {
+    background: var(
+        --highlight
+    ) !important; /* Cor da parte deslizante ao passar o mouse */
+}
+
+.preformatted-text {
+    white-space: pre-wrap;
+}
+
+#tituloAtual:focus,
+#dataAtual:focus,
+#autorAtual:focus {
+    outline: none;
+    border: none;
+}
+
+.hidden {
+    display: none !important;
+}

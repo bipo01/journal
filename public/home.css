@@ -1,0 +1,432 @@
+/* colors.css */
+:root {
+    /* Paleta de Cores */
+    --primary-bg: #121212; /* Cor de fundo principal */
+    --secondary-bg: #1e1e1e; /* Cor de fundo secundária */
+    --tertiary-bg: #2a2a2a; /* Cor de fundo terciária */
+    --primary-text: #e0e0e0; /* Cor de texto principal */
+    --secondary-text: #ffffff; /* Cor de texto secundária */
+    --highlight: #f7c600; /* Cor de destaque */
+    --hover-highlight: #d6a500; /* Cor de destaque ao passar o mouse */
+    --button-bg: #0056b3; /* Cor de fundo dos botões */
+    --button-hover-bg: #004085; /* Cor de fundo dos botões ao passar o mouse */
+
+    --error-red: #b22222; /* Um tom de vermelho escuro que combina com a paleta */
+    --error-red-hover: #8b1a1a; /* Vermelho escuro ao passar o mouse */
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Poppins", sans-serif;
+    background-color: var(--primary-bg);
+    color: var(--primary-text);
+}
+
+.hero-section {
+    background-color: var(--secondary-bg);
+    color: var(--secondary-text);
+    text-align: center;
+}
+
+.form-a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#journals-selecionar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#selecionar {
+    background: none;
+    color: #f7c600;
+    border: none;
+    outline: none;
+    font-weight: 500;
+    font-size: 1.3rem;
+    text-decoration: underline;
+}
+
+#selecionar:hover {
+    color: #d6a500;
+}
+
+#deletar-pasta {
+    background: none;
+    color: var(--error-red);
+    border: none;
+    outline: none;
+    font-weight: 500;
+    font-size: 1.3rem;
+    text-decoration: underline;
+}
+
+#deletar-pasta:hover {
+    color: var(--error-red-hover);
+}
+
+h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: white !important;
+}
+
+.hero-section p {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+}
+
+.features-section {
+    padding: 20px 0;
+    text-align: center;
+    background-color: var(--tertiary-bg);
+    min-height: 100vh !important;
+}
+
+.features-section h2 {
+    font-size: 2.5rem;
+    font-weight: 600;
+    margin-bottom: 40px;
+    color: var(--secondary-text);
+}
+
+.features-section .row {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.feature-box {
+    margin-bottom: 30px;
+    background-color: var(--tertiary-bg);
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.feature-box p,
+.feature-box h4 {
+    color: var(--secondary-text);
+}
+
+.feature-box i {
+    font-size: 3rem;
+    color: var(--highlight);
+    margin-bottom: 20px;
+}
+
+.cta-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cta-section p {
+    font-size: 1.2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cta-section a {
+    font-weight: 500;
+    font-size: 1.4rem;
+    text-transform: uppercase;
+}
+
+.btn-primary {
+    background-color: var(--secondary-bg) !important;
+    border-color: var(--secondary-bg) !important;
+    color: var(--error-red) !important;
+}
+
+.btn-primary:hover {
+    background-color: var(--tertiary-bg) !important;
+}
+
+.btn-dark {
+    background-color: var(--highlight) !important;
+    color: black !important;
+    font-weight: 500 !important;
+    font-size: 1rem !important;
+    text-transform: uppercase !important;
+}
+
+.btn-dark:hover {
+    color: var(--hover-highlight) !important;
+    background-color: var(--secondary-bg) !important;
+}
+
+.btn-account {
+    background-color: none;
+    color: white !important;
+    font-weight: 500 !important;
+    font-size: 1.4rem !important;
+    text-transform: uppercase !important;
+}
+
+.btn-account:hover {
+    background-color: var(--tertiary-bg) !important;
+}
+
+/* posts.css */
+
+.posts {
+    display: flex;
+    flex-wrap: wrap; /* Permite que os itens quebrem linha se não couberem */
+    gap: 20px; /* Espaçamento entre as caixas */
+    justify-content: center; /* Centraliza as caixas horizontalmente */
+    padding: 20px;
+}
+
+.post-box {
+    position: relative; /* Necessário para posicionar o checkbox */
+    background-color: var(--secondary-bg);
+    border-radius: 10px;
+    padding: 20px;
+    width: 300px; /* Largura fixa para as caixas */
+    color: var(--secondary-text);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra para destacar as caixas */
+    transition: transform 0.2s; /* Suave transição ao passar o mouse */
+}
+
+.post-box h4 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    color: var(--secondary-text);
+}
+
+.post-box p {
+    font-size: 1rem;
+    color: var(--primary-text);
+}
+
+.post-box:hover {
+    transform: translateY(-5px); /* Elevação da caixa ao passar o mouse */
+}
+
+.post-box button {
+    background-color: transparent;
+    border: none;
+    text-align: left;
+    width: 100%;
+    padding: 0;
+    color: inherit;
+    cursor: pointer;
+}
+
+/* Estilização do checkbox */
+.check-selecionar {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+    appearance: none;
+    background-color: var(--tertiary-bg);
+    border: 2px solid var(--highlight);
+    border-radius: 5px;
+    transition: background-color 0.2s, border-color 0.2s;
+}
+
+.check-selecionar:checked {
+    background-color: var(--highlight);
+    border-color: var(--hover-highlight);
+}
+
+.check-selecionar:hover {
+    border-color: var(--hover-highlight);
+}
+
+#semposts {
+    text-align: center;
+    color: var(--secondary-text);
+}
+
+#deletar,
+#mover {
+    font-size: 1.5rem;
+    color: var(--primary-bg);
+    background: #d6a500;
+    padding: 0.3rem 0.5rem;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#cancelar {
+    color: #d6a500;
+    background: var(--primary-bg);
+
+    font-size: 1.5rem;
+    padding: 0.3rem 0.5rem;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#deletar:hover,
+#mover:hover {
+    color: #d6a500;
+    background: var(--primary-bg);
+}
+
+#cancelar:hover {
+    color: var(--primary-bg);
+    background: #d6a500;
+}
+
+.clicado {
+    color: gray !important;
+}
+
+.pastas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+    margin-bottom: 20px;
+    padding: 20px;
+}
+
+.pastas-e-deletar-pastas {
+    padding: 0 5rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+.pastas #pasta {
+    background-color: var(--secondary-bg);
+    color: var(--secondary-text);
+    font-weight: 500;
+    font-size: 1rem;
+    text-transform: uppercase;
+    border: 2px solid var(--highlight);
+    border-radius: 10px;
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+}
+
+.selecionado {
+    background-color: var(--highlight) !important;
+    color: var(--primary-bg) !important;
+    border-color: var(--hover-highlight) !important;
+}
+
+.pastas #pasta:hover {
+    background-color: var(--highlight);
+    color: var(--primary-bg);
+    border-color: var(--hover-highlight);
+}
+
+.pastas #pasta:active {
+    background-color: var(--hover-highlight);
+    color: var(--primary-bg);
+    border-color: var(--highlight);
+}
+
+/* Estilização do input novapasta */
+.hero-section #addpastaform,
+#form-mover {
+    margin-top: 15px; /* Espaçamento superior para deslocar o formulário para baixo */
+}
+
+#novapasta,
+#form-mover select {
+    width: 200px; /* Largura do input */
+    padding: 10px; /* Espaçamento interno */
+    margin-right: 10px; /* Espaçamento entre o input e o botão */
+    font-size: 1rem; /* Tamanho da fonte */
+    color: var(--primary-text); /* Cor do texto */
+    background-color: var(--tertiary-bg); /* Cor de fundo */
+    border: 2px solid var(--highlight); /* Borda com a cor de destaque */
+    border-radius: 5px; /* Bordas arredondadas */
+    transition: border-color 0.2s, background-color 0.2s; /* Transição suave */
+}
+
+#form-mover select {
+    margin-bottom: 20px;
+}
+
+#novapasta::placeholder {
+    color: var(--primary-text); /* Cor do placeholder */
+}
+
+#novapasta:focus,
+#form-mover select:focus {
+    outline: none;
+    border-color: var(--hover-highlight); /* Cor da borda ao focar */
+    background-color: var(--secondary-bg); /* Cor de fundo ao focar */
+}
+
+/* Estilização do botão de envio */
+.hero-section #addpastaform button,
+#form-mover button {
+    background-color: var(--highlight); /* Cor de fundo */
+    border: none; /* Remover borda padrão */
+    padding: 10px 15px; /* Espaçamento interno */
+    border-radius: 5px; /* Bordas arredondadas */
+    cursor: pointer; /* Indicador de botão clicável */
+    transition: background-color 0.2s, transform 0.2s; /* Transição suave */
+}
+
+.hero-section #addpastaform button i,
+#form-mover button i {
+    color: var(--primary-bg); /* Cor do ícone */
+    font-size: 1.2rem; /* Tamanho do ícone */
+}
+
+.hero-section #addpastaform button:hover,
+#form-mover button:hover {
+    background-color: var(
+        --hover-highlight
+    ); /* Cor de fundo ao passar o mouse */
+    transform: translateY(-3px); /* Efeito de elevação */
+}
+
+.hero-section #addpastaform button:focus,
+#form-mover button:focus {
+    outline: none;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.heroTeste {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.3rem 5rem;
+}
+
+.heroTeste div {
+    display: flex;
+}
+
+.heroTeste p {
+    background: green;
+}
+
+.logOut-Hero {
+    background-color: var(--secondary-bg);
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 2rem;
+    align-items: center;
+}
+
+.hero-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}

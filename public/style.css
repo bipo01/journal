@@ -1,0 +1,209 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins";
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: rgb(174, 172, 172);
+    justify-content: center;
+}
+
+.div-form-login,
+.div-form-register {
+    margin: 10px auto;
+    background: white;
+    padding: 1.2rem;
+    border-radius: 10px;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.556);
+    width: 60%;
+}
+
+#form-login,
+#form-register {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+#form-login input,
+#form-register input {
+    padding: 0.4rem 1.5rem;
+    border-radius: 5px;
+    font-size: 1.4rem;
+}
+
+#form-login button,
+#form-register button {
+    padding: 0.5rem 1.5rem;
+    font-size: 1.4rem;
+}
+
+.form-add-post,
+.posts {
+    background: white;
+    width: 1000px;
+    margin: 20px 0;
+    border-radius: 10px;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.318);
+    padding: 1rem;
+}
+
+.post {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.3rem;
+    background: gainsboro;
+    padding: 0.5rem 2rem;
+    border-radius: 10px;
+    margin: 10px 0;
+    cursor: pointer;
+}
+
+.post:hover {
+    background: rgba(123, 121, 121, 0.475);
+}
+
+.post-escondido,
+.div-form-escondido {
+    background: rgba(0, 0, 0, 0.95);
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    min-height: 100vh;
+    height: max-content;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    font-size: 2rem;
+    color: white;
+    padding: 2rem;
+    flex-direction: column;
+    gap: 30px;
+    z-index: 1000;
+}
+
+.post-escondido-in,
+.div-form-escondido form {
+    background-color: black;
+    width: 1000px;
+    padding: 2rem;
+    text-align: center;
+    border-radius: 5px;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+}
+
+.deletar-editar-div {
+    display: flex;
+    justify-content: space-between;
+}
+
+#fechar-post {
+    padding: 0.5rem 1.5rem;
+    font-size: 1.4rem;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bolder;
+}
+
+.form-add-post form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 1rem;
+}
+
+.form-add-post form input,
+.form-add-post form textarea,
+.form-add-post form button,
+.div-form-escondido form input,
+.div-form-escondido form textarea,
+.div-form-escondido form button {
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    border: none;
+    outline: none;
+    background: gainsboro;
+    font-size: 1.2rem;
+}
+
+.form-add-post form button,
+.div-form-escondido form button {
+    cursor: pointer;
+}
+
+.form-add-post form button:hover,
+.div-form-escondido form button:hover {
+    background: rgba(123, 121, 121, 0.475);
+}
+
+#btnShowAddForm {
+    padding: 0.5rem 1.5rem;
+    margin: 20px;
+    cursor: pointer;
+    border-radius: 4px;
+    border: none;
+    font-size: 1.1rem;
+}
+
+.div-login-register {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: 1rem;
+}
+
+.div-all-posts {
+    display: flex;
+    background: white;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    width: 80%;
+    padding: 1.5rem;
+    border-radius: 10px;
+}
+
+.div-post {
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+    border: 1px solid black;
+    padding: 1rem;
+    width: 80%;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 1.4rem;
+}
+
+#semposts {
+    font-size: 1.8rem;
+}
+
+.div-data-autor {
+    display: flex;
+    justify-content: space-between;
+}
+
+.local {
+    background: rgba(240, 223, 192, 0.809);
+}
+
+.local:focus {
+    background: white;
+}
+
+.hidden {
+    display: none !important;
+}

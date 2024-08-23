@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Home</title>
+        <link rel="stylesheet" href="home.css" />
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css"
+        />
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+            crossorigin="anonymous"
+        />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
+            rel="stylesheet"
+        />
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+        />
+    </head>
+    <body>
+        <div class="logOut-Hero">
+            <!-- Contêiner flexível para todos os itens -->
+            <div class="hero-actions">
+                <a href="/my-account" class="btn btn-account">
+                    <i class="bi bi-person-circle"></i
+                ></a>
+                <!-- Hero Section -->
+                <section class="hero-section">
+                    <div class="form-a">
+                        <form id="postnovo" action="/add" method="post">
+                            <input
+                                type="hidden"
+                                name="pastaAtual"
+                                id="pastaAtual"
+                            />
+                            <button class="btn btn-dark" type="submit">
+                                Novo Post
+                            </button>
+                        </form>
+                        <a id="pastanova" class="btn btn-dark">Nova Pasta</a>
+                    </div>
+                    <form
+                        id="addpastaform"
+                        class="hidden"
+                        action="/add-pasta"
+                        method="post"
+                    >
+                        <input
+                            type="hidden"
+                            name="userId"
+                            value="<%= usuario.id %>"
+                        />
+                        <input
+                            autocomplete="off"
+                            type="text"
+                            name="novapasta"
+                            id="novapasta"
+                            placeholder="Nova pasta"
+                        />
+                        <button type="submit">
+                            <i class="bi bi-check-square-fill"></i>
+                        </button>
+                    </form>
+                </section>
+
+                <!-- Logout Section -->
+                <section class="cta-section">
+                    <a href="/deslogar" class="btn btn-primary"
+                        ><i class="bi bi-box-arrow-right"></i
+                    ></a>
+                </section>
+            </div>
+        </div>
+
+        <!-- Posts Section -->
+        <section class="features-section">
+            <div class="pastas">
+                <button class="selecionado" id="pasta">Todos</button>
+                <% if (data1.length > 0) { %> <% for( let i = 0; i <
+                data1.length; i++ ) { %>
+                <button id="pasta"><%= data1[i].nomepasta %></button>
+
+                <% } %> <% } %>
+            </div>
+
+            <div class="pastas-e-deletar-pastas">
+                <div
+                    id="journals-selecionar"
+                    class="<%= data.length > 0 ? '' : 'hidden'%>"
+                >
+                    <button id="selecionar">Selecionar</button>
+                    <span id="btns-delete-cancel" class="hidden">
+                        <i id="cancelar" class="bi bi-x-square-fill"></i>
+                        <i id="mover" class="hidden bi bi-send-fill"></i>
+                        <i id="deletar" class="hidden bi bi-trash3-fill"></i>
+                        <form
+                            id="form-mover"
+                            class="hidden"
+                            action="/mover"
+                            method="post"
+                        >
+                            <select name="pasta" id="pastaSelect">
+                                <% if (data1.length > 0) { %> <% for( let i = 0;
+                                i < data1.length; i++ ) { %>
+                                <option value="<%= data1[i].nomepasta %>">
+                                    <%= data1[i].nomepasta %>
+                                </option>
+
+                                <% } %> <% } %>
+                            </select>
+                            <button type="submit">
+                                <i class="bi bi-check-square-fill"></i>
+                            </button>
+                        </form>
+                    </span>
+                </div>
+                <form
+                    class="hidden"
+                    id="deletar-pasta-form"
+                    action="/deletar-pasta"
+                    method="post"
+                >
+                    <input
+                        type="hidden"
+                        name="pastaDeletada"
+                        id="pastaDeletada"
+                    />
+
+                    <button type="submit" id="deletar-pasta">
+                        Deletar pasta
+                    </button>
+                </form>
+            </div>
+
+            <div class="container">
+                <% if (data.length > 0) { %>
+                <div class="posts">
+                    <% for(let i = 0; i < data.length; i++) { %>
+                    <form
+                        class="<%= data[i].pasta %> journal-post"
+                        action="/view"
+                        method="post"
+                    >
+                        <input
+                            type="hidden"
+                            name="idAtual"
+                            id="idAtual"
+                            value="<%= data[i].id %>"
+                        />
+                        <button type="submit" class="post-box">
+                            <input
+                                type="checkbox"
+                                class="check-selecionar hidden"
+                            />
+
+                            <h4><%= data[i].titulo %></h4>
+                            <p><%= datasArr[i] %></p>
+                        </button>
+                    </form>
+
+                    <% } %>
+                </div>
+                <% } %>
+            </div>
+        </section>
+
+        <script>
+            let selecionados = [];
+            let checkSelecionar =
+                document.querySelectorAll(".check-selecionar");
+            const btnSelecionar = document.querySelector("#selecionar");
+            const spanDeleteCancel = document.querySelector(
+                "#btns-delete-cancel"
+            );
+            const btnDeletar = document.querySelector("#deletar");
+            const btnCancelar = document.querySelector("#cancelar");
+            const btnMover = document.querySelector("#mover");
+            const btnPastaNova = document.querySelector("#pastanova");
+            const btnPasta = document.querySelectorAll("#pasta");
+            const formMover = document.querySelector("#form-mover");
+            const formAddPastaNova = document.querySelector("#addpastaform");
+            const deletarPasta = document.querySelector("#deletar-pasta");
+            const deletarPastaForm = document.querySelector(
+                "#deletar-pasta-form"
+            );
+
+            const posts = document.querySelectorAll(".journal-post");
+
+            deletarPastaForm.addEventListener("submit", (e) => {
+                e.preventDefault();
+                const confirmando = confirm(
+                    "Deseja apagar a pasta e todos os seus conteúdos?"
+                );
+                if (confirmando) {
+                    deletarPastaForm.submit();
+                }
+            });
+
+            formAddPastaNova.addEventListener("submit", (e) => {
+                const pastaNova = document
+                    .querySelector("#novapasta")
+                    .value.toLowerCase()
+                    .trim();
+                const todasPastas = [
+                    ...document.querySelectorAll("#pasta"),
+                ].map((el) => el.textContent.toLowerCase().trim());
+
+                if (todasPastas.includes(pastaNova)) {
+                    e.preventDefault();
+                    alert("Pasta já existe");
+                }
+            });
+
+            btnMover.addEventListener("click", () => {
+                formMover.classList.toggle("hidden");
+            });
+
+            btnPasta.forEach((btn, i) => {
+                btn.addEventListener("click", () => {
+                    document.querySelector("#pastaDeletada").value =
+                        btn.textContent;
+                    if (btn.textContent !== "Todos") {
+                        deletarPastaForm.classList.remove("hidden");
+                    } else {
+                        deletarPastaForm.classList.add("hidden");
+                    }
+
+                    btnPasta.forEach((btn) =>
+                        btn.classList.remove("selecionado")
+                    );
+                    btn.classList.add("selecionado");
+                    console.log(btn.textContent);
+
+                    posts.forEach((post) => {
+                        if (!post.classList.contains(btn.textContent.trim())) {
+                            post.classList.add("hidden");
+                        } else {
+                            post.classList.remove("hidden");
+                        }
+
+                        if (btn.textContent === "Todos") {
+                            post.classList.remove("hidden");
+                        }
+                    });
+
+                    document.querySelector("#pastaAtual").value =
+                        btn.textContent;
+                });
+            });
+
+            btnPastaNova.addEventListener("click", () => {
+                document
+                    .querySelector(".hero-section #addpastaform")
+                    .classList.toggle("hidden");
+            });
+
+            btnCancelar.addEventListener("click", () => {
+                selecionados = [];
+                spanDeleteCancel.classList.add("hidden");
+                btnSelecionar.classList.remove("hidden");
+                btnDeletar.classList.add("hidden");
+                btnMover.classList.add("hidden");
+                formMover.classList.add("hidden");
+
+                checkSelecionar.forEach((btn) => {
+                    btn.classList.add("hidden");
+                    btn.checked = false;
+                });
+            });
+
+            btnDeletar.addEventListener("click", async () => {
+                console.log(`Serão deletados: ${selecionados}`);
+                const ids = [];
+                selecionados.forEach((el, i) => {
+                    ids.push(el.children[0].value);
+
+                    el.remove();
+                    checkSelecionar =
+                        document.querySelectorAll(".check-selecionar");
+                });
+
+                if (checkSelecionar.length === 0) {
+                    btnCancelar.classList.add("hidden");
+                }
+
+                btnDeletar.classList.add("hidden");
+                btnMover.classList.add("hidden");
+
+                await fetch(
+                    `http://localhost:3000/deletar?selecionados=${ids}`
+                );
+                selecionados = [];
+            });
+
+            formMover.addEventListener("submit", async (e) => {
+                e.preventDefault();
+                const pasta = document.querySelector("#pastaSelect").value;
+                console.log(selecionados, pasta);
+
+                const ids = [];
+                selecionados.forEach((el, i) => {
+                    ids.push(el.children[0].value);
+                });
+
+                await fetch(
+                    `http://localhost:3000/mover?selecionados=${ids}&pasta=${pasta}`
+                );
+
+                location.reload();
+            });
+
+            checkSelecionar.forEach((btn) => {
+                btn.addEventListener("click", () => {
+                    if (btn.checked) {
+                        selecionados.push(btn.closest("form"));
+                    } else {
+                        const i = selecionados.indexOf(btn.closest("form"));
+
+                        selecionados.splice(i, 1);
+                    }
+
+                    if (selecionados.length > 0) {
+                        btnDeletar.classList.remove("hidden");
+                        btnMover.classList.remove("hidden");
+                    } else {
+                        btnDeletar.classList.add("hidden");
+                        btnMover.classList.add("hidden");
+                    }
+
+                    console.log(selecionados.length);
+                });
+            });
+
+            btnSelecionar.addEventListener("click", () => {
+                spanDeleteCancel.classList.remove("hidden");
+                btnSelecionar.classList.add("hidden");
+
+                checkSelecionar.forEach((btn) => {
+                    btn.classList.toggle("hidden");
+                });
+            });
+        </script>
+
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+            crossorigin="anonymous"
+        ></script>
+    </body>
+</html>
