@@ -77,7 +77,7 @@ app.post("/login", async (req, res) => {
 
     if (req.session.usuario) {
         console.log(req.session.usuario);
-        res.redirect("/logado");
+        return res.redirect("/logado");
     } else {
         const result = await db.query(
             "SELECT * FROM journalfsuser WHERE usuario = $1",
