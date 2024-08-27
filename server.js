@@ -39,7 +39,7 @@ app.use(
         secret: "joaoBispoSouza", // Troque por uma chave secreta forte
         resave: false,
         saveUninitialized: false,
-        cookie: { secure: false }, // Para produção, mude para true se estiver usando HTTPS
+        cookie: { secure: true }, // Para produção, mude para true se estiver usando HTTPS
     })
 );
 
@@ -47,14 +47,15 @@ app.get("/", async (req, res) => {
     if (req.session.usuario) {
         res.redirect("/logado");
     } else {
-        res.render("homepage.ejs");
+        return res.render("homepage.ejs");
     }
 });
 app.get("/register", (req, res) => {
+    req.session.usuario = null;
     wrongPass = false;
     wrongUser = false;
     userExists = false;
-    res.render("register.ejs", { userExists: userExists });
+    return res.render("register.ejs", { userExists: userExists });
 });
 
 app.get("/login", (req, res) => {
@@ -63,9 +64,12 @@ app.get("/login", (req, res) => {
     wrongUser = false;
     console.log("Usuário atual no GET: ", req.session.usuario);
     if (req.session.usuario) {
-        res.redirect("/logado");
+        return res.redirect("/logado");
     }
-    res.render("login.ejs", { wrongPass: wrongPass, wrongUser: wrongUser });
+    return res.render("login.ejs", {
+        wrongPass: wrongPass,
+        wrongUser: wrongUser,
+    });
 });
 
 app.post("/login", async (req, res) => {
@@ -84,12 +88,12 @@ app.post("/login", async (req, res) => {
         if (data) {
             if (data.senha === req.body.senha) {
                 req.session.usuario = data;
-                res.redirect("/logado");
+                return res.redirect("/logado");
             } else {
                 console.log("senha incorreta");
                 wrongPass = true;
                 wrongUser = false;
-                res.render("login.ejs", {
+                return res.render("login.ejs", {
                     wrongPass: wrongPass,
                     wrongUser: wrongUser,
                 });
@@ -98,7 +102,7 @@ app.post("/login", async (req, res) => {
             console.log("usuário inválido");
             wrongPass = false;
             wrongUser = true;
-            res.render("login.ejs", {
+            return res.render("login.ejs", {
                 wrongUser: wrongUser,
                 wrongPass: wrongPass,
             });
@@ -127,10 +131,10 @@ app.post("/register", async (req, res) => {
         );
         const data = result.rows[0];
         req.session.usuario = data;
-        res.redirect("/login");
+        return res.redirect("/login");
     } else {
         userExists = true;
-        res.render("register.ejs", { userExists: userExists });
+        return res.render("register.ejs", { userExists: userExists });
     }
 });
 
@@ -169,14 +173,14 @@ app.get("/logado", async (req, res) => {
 
         console.log(datasArr);
 
-        res.render("home.ejs", {
+        return res.render("home.ejs", {
             data: data,
             data1: data1,
             datasArr: datasArr,
             usuario: req.session.usuario,
         });
     } else {
-        res.redirect("/login");
+        return res.redirect("/login");
     }
 });
 
@@ -196,7 +200,7 @@ app.get("/my-account", async (req, res) => {
     const fName = req.session.usuario.nome.split(" ")[0];
     const nome = fName[0].toUpperCase() + fName.slice(1);
 
-    res.render("myaccount.ejs", {
+    return res.render("myaccount.ejs", {
         pastas: data1,
         posts: data,
         usuario: req.session.usuario,
@@ -210,9 +214,15 @@ app.post("/deletar-conta", (req, res) => {
     db.query("DELETE FROM journalpastasfs WHERE user_id = $1", [userId]);
     db.query("DELETE FROM journalfsuser WHERE id = $1", [userId]);
 
-    req.session.usuario = null;
+    req.session.destroy((err) => {
+        if (err) {
+            return res.redirect("/logado");
+        }
+        res.clearCookie("connect.sid");
+        res.redirect("/");
+    });
 
-    res.redirect("/");
+    return res.redirect("/");
 });
 
 app.post("/deletar-pasta", (req, res) => {
@@ -224,7 +234,7 @@ app.post("/deletar-pasta", (req, res) => {
         req.body.pastaDeletada,
         req.session.usuario.id,
     ]);
-    res.redirect("/logado");
+    return res.redirect("/logado");
 });
 
 app.post("/add-pasta", (req, res) => {
@@ -232,7 +242,7 @@ app.post("/add-pasta", (req, res) => {
         "INSERT INTO journalpastasfs (nomepasta, user_id) VALUES ($1, $2)",
         [req.body.novapasta.toLowerCase().trim(), req.session.usuario.id]
     );
-    res.redirect("/logado");
+    return res.redirect("/logado");
 });
 
 app.get("/pasta", (req, res) => {
@@ -253,12 +263,12 @@ app.post("/add", (req, res) => {
         ]
     );
 
-    res.redirect("/login");
+    return res.redirect("/login");
 });
 
 app.post("/delete", (req, res) => {
     db.query("DELETE FROM journalfs WHERE id = $1", [req.body.idAtual]);
-    res.redirect("/login");
+    return res.redirect("/login");
 });
 
 app.post("/edit", async (req, res) => {
@@ -277,7 +287,7 @@ app.post("/edit", async (req, res) => {
         [titulo, texto, autor, datapost, req.body.idAtual]
     );
 
-    res.redirect("/login");
+    return res.redirect("/login");
 });
 
 app.get("/deslogar", (req, res) => {
@@ -286,7 +296,7 @@ app.get("/deslogar", (req, res) => {
             return res.redirect("/logado");
         }
         res.clearCookie("connect.sid");
-        res.redirect("/");
+        return res.redirect("/");
     });
 });
 
@@ -297,7 +307,7 @@ app.get("/view", async (req, res) => {
         ]);
         const data = result.rows[0];
 
-        res.render("verpost.ejs", { data: data });
+        return res.render("verpost.ejs", { data: data });
     }
 });
 
@@ -309,7 +319,7 @@ app.post("/view", async (req, res) => {
         ]);
         const data = result.rows[0];
 
-        res.render("verpost.ejs", { data: data });
+        return res.render("verpost.ejs", { data: data });
     }
 });
 
@@ -359,7 +369,7 @@ app.get("/mover", (req, res) => {
         ]);
     });
 
-    res.redirect("/logado");
+    return res.redirect("/logado");
 });
 
 app.listen(port, () => {

@@ -91,7 +91,7 @@
 
                 <% } %> <% } %>
             </div>
- 
+
             <div class="pastas-e-deletar-pastas">
                 <div
                     id="journals-selecionar"
@@ -296,7 +296,7 @@
                 btnMover.classList.add("hidden");
 
                 await fetch(
-                    `http://localhost:3000/deletar?selecionados=${ids}`
+                    `https://journal-peach-rho.vercel.app/deletar?selecionados=${ids}`
                 );
                 selecionados = [];
             });
@@ -312,7 +312,7 @@
                 });
 
                 await fetch(
-                    `http://localhost:3000/mover?selecionados=${ids}&pasta=${pasta}`
+                    `https://journal-peach-rho.vercel.app/mover?selecionados=${ids}&pasta=${pasta}`
                 );
 
                 location.reload();
