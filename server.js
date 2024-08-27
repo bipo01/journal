@@ -39,7 +39,7 @@ app.use(
         secret: "joaoBispoSouza", // Troque por uma chave secreta forte
         resave: false,
         saveUninitialized: false,
-        cookie: { secure: true }, // Para produção, mude para true se estiver usando HTTPS
+        cookie: { secure: false }, // Para produção, mude para true se estiver usando HTTPS
     })
 );
 
