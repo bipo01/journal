@@ -239,7 +239,10 @@ app.post("/deletar-pasta", (req, res) => {
 app.post("/add-pasta", (req, res) => {
     db.query(
         "INSERT INTO journalpastasfs (nomepasta, user_id) VALUES ($1, $2)",
-        [req.body.novapasta.toLowerCase().trim(), req.session.usuario.id]
+        [
+            req.body.novapasta.toLowerCase().trim() || "Todos",
+            req.session.usuario.id,
+        ]
     );
     return res.redirect("/logado");
 });
