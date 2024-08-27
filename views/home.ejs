@@ -109,6 +109,7 @@
                             method="post"
                         >
                             <select name="pasta" id="pastaSelect">
+                                <option value="Todos">Todos</option>
                                 <% if (data1.length > 0) { %> <% for( let i = 0;
                                 i < data1.length; i++ ) { %>
                                 <option value="<%= data1[i].nomepasta %>">
@@ -330,7 +331,9 @@
 
                     if (selecionados.length > 0) {
                         btnDeletar.classList.remove("hidden");
-                        btnMover.classList.remove("hidden");
+                        if (pasta.children.length > 1) {
+                            btnMover.classList.remove("hidden");
+                        }
                     } else {
                         btnDeletar.classList.add("hidden");
                         btnMover.classList.add("hidden");
