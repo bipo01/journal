@@ -18,12 +18,9 @@ import path from "path";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-let usuario;
 let wrongPass = false;
 let wrongUser = false;
 let userExists = false;
-let postAtual = false;
-let pastaatual = "Todos";
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
@@ -52,23 +49,23 @@ app.get("/", async (req, res) => {
 });
 app.get("/register", (req, res) => {
     req.session.usuario = null;
-    wrongPass = false;
-    wrongUser = false;
-    userExists = false;
+    req.session.wrongPass = false;
+    req.session.wrongUser = false;
+    req.session.userExists = false;
     return res.render("register.ejs", { userExists: userExists });
 });
 
 app.get("/login", (req, res) => {
-    userExists = false;
-    wrongPass = false;
-    wrongUser = false;
+    req.session.wrongPass = false;
+    req.session.wrongUser = false;
+    req.session.userExists = false;
     console.log("Usuário atual no GET: ", req.session.usuario);
     if (req.session.usuario) {
         return res.redirect("/logado");
     }
     return res.render("login.ejs", {
-        wrongPass: wrongPass,
-        wrongUser: wrongUser,
+        wrongPass: req.session.wrongPass,
+        wrongUser: req.session.wrongUser,
     });
 });
 
@@ -91,20 +88,20 @@ app.post("/login", async (req, res) => {
                 return res.redirect("/logado");
             } else {
                 console.log("senha incorreta");
-                wrongPass = true;
-                wrongUser = false;
+                req.session.wrongPass = true;
+                req.session.wrongUser = false;
                 return res.render("login.ejs", {
-                    wrongPass: wrongPass,
-                    wrongUser: wrongUser,
+                    wrongPass: req.session.wrongPass,
+                    wrongUser: req.session.wrongUser,
                 });
             }
         } else {
             console.log("usuário inválido");
-            wrongPass = false;
-            wrongUser = true;
+            req.session.wrongPass = false;
+            req.session.wrongUser = true;
             return res.render("login.ejs", {
-                wrongUser: wrongUser,
-                wrongPass: wrongPass,
+                wrongUser: req.session.wrongUser,
+                wrongPass: req.session.wrongPass,
             });
         }
     }
@@ -134,15 +131,17 @@ app.post("/register", async (req, res) => {
         return res.redirect("/login");
     } else {
         userExists = true;
-        return res.render("register.ejs", { userExists: userExists });
+        return res.render("register.ejs", {
+            userExists: req.session.userExists,
+        });
     }
 });
 
 app.get("/logado", async (req, res) => {
     if (req.session.usuario) {
-        userExists = false;
-        wrongPass = false;
-        wrongUser = false;
+        req.session.userExists = false;
+        req.session.wrongPass = false;
+        req.session.wrongUser = false;
         console.log(req.session.usuario);
         const result = await db.query(
             "SELECT * FROM journalfs WHERE user_id = $1 ORDER BY datapost DESC, id DESC",
@@ -245,11 +244,6 @@ app.post("/add-pasta", (req, res) => {
     return res.redirect("/logado");
 });
 
-app.get("/pasta", (req, res) => {
-    pastaatual = req.query.pastaatual;
-    console.log(pastaatual);
-});
-
 app.post("/add", (req, res) => {
     const pastaAtual = req.body.pastaAtual;
     db.query(
@@ -301,9 +295,9 @@ app.get("/deslogar", (req, res) => {
 });
 
 app.get("/view", async (req, res) => {
-    if (req.session.usuario && postAtual) {
+    if (req.session.usuario && req.session.postAtual) {
         const result = await db.query("SELECT * FROM journalfs WHERE id = $1", [
-            postAtual,
+            req.session.postAtual,
         ]);
         const data = result.rows[0];
 
@@ -313,7 +307,7 @@ app.get("/view", async (req, res) => {
 
 app.post("/view", async (req, res) => {
     if (req.session.usuario) {
-        postAtual = req.body.idAtual;
+        req.session.postAtual = req.body.idAtual;
         const result = await db.query("SELECT * FROM journalfs WHERE id = $1", [
             req.body.idAtual,
         ]);

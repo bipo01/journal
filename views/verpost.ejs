@@ -174,7 +174,7 @@
                     const idAtual = document.querySelector("#idAtual").value;
 
                     fetch(
-                        `http://localhost:3000/salvar?titulo=${tituloAtual}&texto=${dataAtual.replaceAll(
+                        `https://journal-peach-rho.vercel.app/salvar?titulo=${tituloAtual}&texto=${dataAtual.replaceAll(
                             "\n",
                             "*18*"
                         )}&autor=${autorAtual}&id=${idAtual}`
