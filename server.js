@@ -2,6 +2,7 @@ import express from "express";
 import pg from "pg";
 import bodyParser from "body-parser";
 import cors from "cors";
+import session from "express-session";
 
 const app = express();
 const port = 3000;
@@ -33,8 +34,17 @@ app.set("view engine", "ejs");
 
 app.use(express.static(path.join(__dirname, "public")));
 
+app.use(
+    session({
+        secret: "joaoBispoSouza", // Troque por uma chave secreta forte
+        resave: false,
+        saveUninitialized: false,
+        cookie: { secure: false }, // Para produção, mude para true se estiver usando HTTPS
+    })
+);
+
 app.get("/", async (req, res) => {
-    if (usuario) {
+    if (req.session.usuario) {
         res.redirect("/logado");
     } else {
         res.render("homepage.ejs");
@@ -51,18 +61,18 @@ app.get("/login", (req, res) => {
     userExists = false;
     wrongPass = false;
     wrongUser = false;
-    console.log("Usuário atual no GET: ", usuario);
-    if (usuario) {
+    console.log("Usuário atual no GET: ", req.session.usuario);
+    if (req.session.usuario) {
         res.redirect("/logado");
     }
     res.render("login.ejs", { wrongPass: wrongPass, wrongUser: wrongUser });
 });
 
 app.post("/login", async (req, res) => {
-    console.log("Usuário atual: ", usuario);
+    console.log("Usuário atual: ", req.session.usuario);
 
-    if (usuario) {
-        console.log(usuario);
+    if (req.session.usuario) {
+        console.log(req.session.usuario);
         res.redirect("/logado");
     } else {
         const result = await db.query(
@@ -73,7 +83,7 @@ app.post("/login", async (req, res) => {
 
         if (data) {
             if (data.senha === req.body.senha) {
-                usuario = data;
+                req.session.usuario = data;
                 res.redirect("/logado");
             } else {
                 console.log("senha incorreta");
@@ -116,7 +126,7 @@ app.post("/register", async (req, res) => {
             [usuarioReq]
         );
         const data = result.rows[0];
-        usuario = data;
+        req.session.usuario = data;
         res.redirect("/login");
     } else {
         userExists = true;
@@ -125,20 +135,20 @@ app.post("/register", async (req, res) => {
 });
 
 app.get("/logado", async (req, res) => {
-    if (usuario) {
+    if (req.session.usuario) {
         userExists = false;
         wrongPass = false;
         wrongUser = false;
-        console.log(usuario);
+        console.log(req.session.usuario);
         const result = await db.query(
             "SELECT * FROM journalfs WHERE user_id = $1 ORDER BY datapost DESC, id DESC",
-            [usuario.id]
+            [req.session.usuario.id]
         );
         const data = result.rows;
 
         const result1 = await db.query(
             "SELECT * FROM journalpastasfs WHERE user_id = $1",
-            [usuario.id]
+            [req.session.usuario.id]
         );
         const data1 = result1.rows;
 
@@ -163,7 +173,7 @@ app.get("/logado", async (req, res) => {
             data: data,
             data1: data1,
             datasArr: datasArr,
-            usuario: usuario,
+            usuario: req.session.usuario,
         });
     } else {
         res.redirect("/login");
@@ -173,23 +183,23 @@ app.get("/logado", async (req, res) => {
 app.get("/my-account", async (req, res) => {
     const result = await db.query(
         "SELECT titulo FROM journalfs WHERE user_id = $1",
-        [usuario.id]
+        [req.session.usuario.id]
     );
     const data = result.rows.map((el) => el.titulo).length;
 
     const result1 = await db.query(
         "SELECT nomepasta FROM journalpastasfs WHERE user_id = $1",
-        [usuario.id]
+        [req.session.usuario.id]
     );
     const data1 = result1.rows.map((el) => el.nomepasta).length;
 
-    const fName = usuario.nome.split(" ")[0];
+    const fName = req.session.usuario.nome.split(" ")[0];
     const nome = fName[0].toUpperCase() + fName.slice(1);
 
     res.render("myaccount.ejs", {
         pastas: data1,
         posts: data,
-        usuario: usuario,
+        usuario: req.session.usuario,
         nome: nome,
     });
 });
@@ -200,7 +210,7 @@ app.post("/deletar-conta", (req, res) => {
     db.query("DELETE FROM journalpastasfs WHERE user_id = $1", [userId]);
     db.query("DELETE FROM journalfsuser WHERE id = $1", [userId]);
 
-    usuario = null;
+    req.session.usuario = null;
 
     res.redirect("/");
 });
@@ -208,11 +218,11 @@ app.post("/deletar-conta", (req, res) => {
 app.post("/deletar-pasta", (req, res) => {
     db.query(
         "DELETE FROM journalpastasfs WHERE nomepasta = $1 AND user_id = $2",
-        [req.body.pastaDeletada, usuario.id]
+        [req.body.pastaDeletada, req.session.usuario.id]
     );
     db.query("DELETE FROM journalfs WHERE pasta = $1 AND user_id = $2", [
         req.body.pastaDeletada,
-        usuario.id,
+        req.session.usuario.id,
     ]);
     res.redirect("/logado");
 });
@@ -220,7 +230,7 @@ app.post("/deletar-pasta", (req, res) => {
 app.post("/add-pasta", (req, res) => {
     db.query(
         "INSERT INTO journalpastasfs (nomepasta, user_id) VALUES ($1, $2)",
-        [req.body.novapasta.toLowerCase().trim(), usuario.id]
+        [req.body.novapasta.toLowerCase().trim(), req.session.usuario.id]
     );
     res.redirect("/logado");
 });
@@ -234,7 +244,13 @@ app.post("/add", (req, res) => {
     const pastaAtual = req.body.pastaAtual;
     db.query(
         "INSERT INTO journalfs (titulo, autor, datapost, user_id, pasta) VALUES($1,$2,$3,$4, $5)",
-        ["Sem título", "Desconhecido", new Date(), usuario.id, pastaAtual]
+        [
+            "Sem título",
+            "Desconhecido",
+            new Date(),
+            req.session.usuario.id,
+            pastaAtual,
+        ]
     );
 
     res.redirect("/login");
@@ -265,12 +281,17 @@ app.post("/edit", async (req, res) => {
 });
 
 app.get("/deslogar", (req, res) => {
-    usuario = null;
-    res.redirect("/");
+    req.session.destroy((err) => {
+        if (err) {
+            return res.redirect("/logado");
+        }
+        res.clearCookie("connect.sid");
+        res.redirect("/");
+    });
 });
 
 app.get("/view", async (req, res) => {
-    if (usuario && postAtual) {
+    if (req.session.usuario && postAtual) {
         const result = await db.query("SELECT * FROM journalfs WHERE id = $1", [
             postAtual,
         ]);
@@ -281,7 +302,7 @@ app.get("/view", async (req, res) => {
 });
 
 app.post("/view", async (req, res) => {
-    if (usuario) {
+    if (req.session.usuario) {
         postAtual = req.body.idAtual;
         const result = await db.query("SELECT * FROM journalfs WHERE id = $1", [
             req.body.idAtual,
