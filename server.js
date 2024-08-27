@@ -18,10 +18,6 @@ import path from "path";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-let wrongPass = false;
-let wrongUser = false;
-let userExists = false;
-
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 app.use(cors());
@@ -52,7 +48,7 @@ app.get("/register", (req, res) => {
     req.session.wrongPass = false;
     req.session.wrongUser = false;
     req.session.userExists = false;
-    return res.render("register.ejs", { userExists: userExists });
+    return res.render("register.ejs", { userExists: req.session.userExists });
 });
 
 app.get("/login", (req, res) => {
@@ -184,27 +180,31 @@ app.get("/logado", async (req, res) => {
 });
 
 app.get("/my-account", async (req, res) => {
-    const result = await db.query(
-        "SELECT titulo FROM journalfs WHERE user_id = $1",
-        [req.session.usuario.id]
-    );
-    const data = result.rows.map((el) => el.titulo).length;
+    if (req.session.usuario) {
+        const result = await db.query(
+            "SELECT titulo FROM journalfs WHERE user_id = $1",
+            [req.session.usuario.id]
+        );
+        const data = result.rows.map((el) => el.titulo).length;
 
-    const result1 = await db.query(
-        "SELECT nomepasta FROM journalpastasfs WHERE user_id = $1",
-        [req.session.usuario.id]
-    );
-    const data1 = result1.rows.map((el) => el.nomepasta).length;
+        const result1 = await db.query(
+            "SELECT nomepasta FROM journalpastasfs WHERE user_id = $1",
+            [req.session.usuario.id]
+        );
+        const data1 = result1.rows.map((el) => el.nomepasta).length;
 
-    const fName = req.session.usuario.nome.split(" ")[0];
-    const nome = fName[0].toUpperCase() + fName.slice(1);
+        const fName = req.session.usuario.nome.split(" ")[0];
+        const nome = fName[0].toUpperCase() + fName.slice(1);
 
-    return res.render("myaccount.ejs", {
-        pastas: data1,
-        posts: data,
-        usuario: req.session.usuario,
-        nome: nome,
-    });
+        return res.render("myaccount.ejs", {
+            pastas: data1,
+            posts: data,
+            usuario: req.session.usuario,
+            nome: nome,
+        });
+    } else {
+        return res.redirect("/");
+    }
 });
 
 app.post("/deletar-conta", (req, res) => {
