@@ -331,7 +331,7 @@
 
                     if (selecionados.length > 0) {
                         btnDeletar.classList.remove("hidden");
-                        if (pasta.children.length > 1) {
+                        if ([...pasta].length > 1) {
                             btnMover.classList.remove("hidden");
                         }
                     } else {
