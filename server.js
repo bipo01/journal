@@ -3,12 +3,14 @@ import pg from "pg";
 import bodyParser from "body-parser";
 import cors from "cors";
 import session from "express-session";
+import env from "dotenv";
+
+env.config();
 
 const app = express();
 const port = 3000;
 const db = new pg.Client({
-    connectionString:
-        "postgres://default:Ef7gRnhwbD9B@ep-bold-limit-a48ldweb.us-east-1.aws.neon.tech:5432/verceldb?sslmode=require",
+    connectionString: process.env.PG_URL,
 });
 db.connect();
 
@@ -29,10 +31,10 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use(
     session({
-        secret: "joaoBispoSouza", // Troque por uma chave secreta forte
+        secret: process.env.SESSION_PASS,
         resave: false,
         saveUninitialized: false,
-        cookie: { secure: false }, // Para produção, mude para true se estiver usando HTTPS
+        cookie: { secure: false },
     })
 );
 
